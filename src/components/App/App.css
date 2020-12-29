@@ -1,0 +1,8 @@
+main {
+  width: 95%;
+  max-width: 600px;
+  align-self: center;
+  height: 100%;
+  margin: 1rem auto;
+  flex: 1
+}

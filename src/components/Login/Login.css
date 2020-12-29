@@ -1,0 +1,8 @@
+.error-message {
+  color: rgb(214, 0, 0);
+  margin: 1rem auto;
+}
+
+.form-error {
+  color: #FF8A8A;
+}

@@ -1,0 +1,20 @@
+label {
+  display: block;
+}
+
+form div {
+  margin-bottom: 1rem;
+}
+
+.validation-error {
+  color: darkred;
+  margin: 0.5rem auto 0 auto;
+}
+
+#create-acc-btn {
+  width: max-content;
+}
+
+.register-form-div {
+  width: min-content;
+}

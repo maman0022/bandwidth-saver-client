@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom'
 import './index.css';
 import 'normalize.css'
-import App from './App';
+import App from './components/App/App';
 
 ReactDOM.render(
   <BrowserRouter>
