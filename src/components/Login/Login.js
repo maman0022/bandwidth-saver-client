@@ -22,7 +22,7 @@ function Login(props) {
           throw new Error((await response.json()).message)
         }
         TokenService.saveToken((await response.json()).token)
-        props.history.push('/courses')
+        props.history.push('/dashboard')
       })
       .catch(error => setError(error.message))
       .finally(() => setLoading(false))
