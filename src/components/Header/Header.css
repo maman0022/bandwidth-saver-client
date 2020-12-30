@@ -37,7 +37,7 @@ header {
   color: crimson;
 }
 
-@media screen and (min-width:600px) {
+@media screen and (min-width:800px) {
   #main-header, #main-header h1 {
     flex-basis: unset;
     margin-left: 5%;
