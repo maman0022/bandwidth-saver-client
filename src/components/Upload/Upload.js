@@ -56,7 +56,8 @@ function Upload(props) {
         props.setComplete(true)
       },
       progress: function (progress) {
-        props.setStatus(`${progress * 100}% uploaded`)
+        //Just going to show UPLOADING because of dropbox bug in which progress is always returning zero
+        props.setStatus('UPLOADING')
       },
       cancel: function () {
         props.setFingerprint(fingerprintCopy)
@@ -66,12 +67,51 @@ function Upload(props) {
 
       error: function (errorMessage) {
         props.setFingerprint(fingerprintCopy)
-        props.setStatus(`Error occured: ${errorMessage}`)
+        props.setStatus(errorMessage.toString())
         props.setComplete(true)
       }
     }
     // eslint-disable-next-line no-undef
     Dropbox.save(url, filename, options)
+  }
+
+  async function handleOnedrive(e) {
+    e.preventDefault()
+    const form = e.target.parentNode
+    const filename = form['file-name'].value
+    const url = form['file-url'].value
+    if (!filename) {
+      return setNameError(`File name cannot be blank`)
+    }
+    if (!url) {
+      return setUrlError(`File URL must be a valid URL that starts with http(s)://`)
+    }
+    props.setUploading(true)
+    props.setStatus('A pop-up should have opened. Please sign-in to your OneDrive account and afterwards click the save button at the bottom right corner.')
+    const options = {
+      clientId: process.env.REACT_APP_OD_CLIENT_ID,
+      action: 'save',
+      sourceUri: url,
+      fileName: filename,
+      success: function () {
+        ++fingerprintCopy.current_usage
+        props.setFingerprint(fingerprintCopy)
+        props.setStatus("Success! Files saved to your OneDrive.")
+        props.setComplete(true)
+      },
+      cancel: function () {
+        props.setFingerprint(fingerprintCopy)
+        props.setStatus("The transfer was canceled.")
+        props.setComplete(true)
+      },
+      error: function (errorMessage) {
+        props.setFingerprint(fingerprintCopy)
+        props.setStatus(errorMessage.toString())
+        props.setComplete(true)
+      }
+    }
+    // eslint-disable-next-line no-undef
+    OneDrive.save(options)
   }
 
   //get the quota reset time in the users local time
@@ -105,7 +145,7 @@ function Upload(props) {
         <textarea className='full-width' type='text' id='file-url' name='file-url' onChange={validateUrl} required />
         {urlError && <h5 className='error-message'>{urlError}</h5>}
         <button onClick={handleDropbox} disabled={nameError || urlError}>Upload to Dropbox</button>
-        <button>Upload to OneDrive</button>
+        <button onClick={handleOnedrive} disabled={nameError || urlError}>Upload to OneDrive</button>
       </form>
     </>
   )
