@@ -8,6 +8,7 @@ import Header from '../Header/Header'
 import LandingPage from '../LandingPage/LandingPage'
 import Login from '../Login/Login'
 import Register from '../Register/Register'
+import Demo from '../Demo/Demo'
 import Dashboard from '../Dashboard/Dashboard'
 import NotFound from '../NotFound/NotFound'
 
@@ -20,6 +21,7 @@ function App() {
           <PublicOrPrivateRoute exact path='/' component={LandingPage} />
           <PublicOrPrivateRoute exact path='/register' component={Register} />
           <PublicOrPrivateRoute exact path='/login' component={Login} />
+          <PublicOrPrivateRoute exact path='/demo' component={Demo} />
           <ProtectedRoute exact path='/dashboard' component={Dashboard} />
           <PublicOrPrivateRoute component={NotFound} />
         </Switch>

@@ -1,5 +1,4 @@
 import config from '../config'
-import TokenService from "./TokenService"
 
 const ApiService = {
   login(userData) {
@@ -10,8 +9,17 @@ const ApiService = {
     const body = JSON.stringify(userData)
     return fetch(config.BASE_API_URL + 'register', { method: 'POST', headers: { 'content-type': 'application/json' }, body })
   },
-  getDrives() {
-    return fetch(config.BASE_API_URL + `drives`, { headers: { 'authorization': `bearer ${TokenService.getToken()}` } })
+  getFingerprint(identifier) {
+    const body = JSON.stringify({ identifier })
+    return fetch(config.BASE_API_URL + `fingerprints`, { body, method: 'POST', headers: { 'content-type': 'application/json' } })
+  },
+  resetFingerprint(identifier) {
+    const body = JSON.stringify({ identifier, action: 'reset' })
+    return fetch(config.BASE_API_URL + `fingerprints`, { body, method: 'PUT', headers: { 'content-type': 'application/json' } })
+  },
+  incrementUsage(identifier) {
+    const body = JSON.stringify({ identifier, action: 'increment' })
+    return fetch(config.BASE_API_URL + `fingerprints`, { body, method: 'PUT', headers: { 'content-type': 'application/json' } })
   }
 }
 

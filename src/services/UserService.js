@@ -6,12 +6,14 @@ const UserService = {
     if (!payload) {
       return {
         first_name: '',
-        id: null
+        id: null,
+        email: ''
       }
     }
     return {
       id: payload.id,
-      first_name: payload.first_name
+      first_name: payload.first_name,
+      email: payload.email
     }
   }
 }
