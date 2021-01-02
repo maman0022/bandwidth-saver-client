@@ -12,7 +12,7 @@ function Upload(props) {
   function checkIfResetNeeded() {
     if (Date.now() > Number(fingerprintCopy.next_reset)) {
       return new Promise((resolve, reject) => {
-        ApiService.resetFingerprint(props.email)
+        ApiService.resetFingerprint(props.identifier)
           .then(async response => {
             if (!response.ok) {
               return reject((await response.json()).message)

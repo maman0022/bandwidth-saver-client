@@ -7,13 +7,13 @@ const UserService = {
       return {
         first_name: '',
         id: null,
-        email: ''
+        identifier: ''
       }
     }
     return {
       id: payload.id,
       first_name: payload.first_name,
-      email: payload.email
+      identifier: payload.identifier
     }
   }
 }

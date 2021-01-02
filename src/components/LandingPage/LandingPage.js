@@ -10,7 +10,7 @@ function LandingPage() {
       <p className='lp-paragraph'>Save on bandwidth and forget about going over your data caps.</p>
       <p className='lp-paragraph'>As a non-registered user, you can upload 2 files per hour.</p>
       <p className='lp-paragraph'>If you register, your limit will be increased to 5 files per hour.</p>
-      <p className='lp-paragraph'>To try the app without creating an account, click <Link to='/demo'>here</Link>.</p>
+      <p className='lp-paragraph'>To try the app without creating an account, click <Link to='/dashboard'>here</Link>.</p>
       <p className='lp-paragraph'>To create an account and start with an increased limit, click <Link to='/register'>here</Link>.</p>
     </section>
   )

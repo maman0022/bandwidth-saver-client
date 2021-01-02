@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import './Dashboard.css'
+import FingerprintJS from '@fingerprintjs/fingerprintjs'
 import UserService from '../../services/UserService'
 import ApiService from '../../services/ApiService'
 import Upload from '../Upload/Upload'
@@ -15,24 +16,30 @@ function Dashboard() {
   const [complete, setComplete] = useState(false)
 
   useEffect(() => {
-    setLoading(true)
-    setError(null)
-    ApiService.getFingerprint(user.email)
-      .then(async response => {
-        if (!response.ok) {
-          throw new Error((await response.json()).message)
-        }
-        setFingerprint(await response.json())
-      })
-      .catch(error => setError(error.message))
-      .finally(() => setLoading(false))
+    (async () => {
+      setLoading(true)
+      setError(null)
+      if (!user.identifier) {
+        const fp = await FingerprintJS.load()
+        user.identifier = (await fp.get()).visitorId
+      }
+      ApiService.getFingerprint(user.identifier)
+        .then(async response => {
+          if (!response.ok) {
+            throw new Error((await response.json()).message)
+          }
+          setFingerprint(await response.json())
+        })
+        .catch(error => setError(error.message))
+        .finally(() => setLoading(false))
+    })()
   }, [])
 
   return (
     <section className='flex-column full-height justify-evenly'>
       {!!error && <h5 className='error-message'>{error}</h5>}
       {loading && !error && <h3 className='loading-message'>Loading</h3>}
-      {!uploading && <Upload setUploading={setUploading} fingerprint={fingerprint} setFingerprint={setFingerprint} setStatus={setStatus} email={user.email} setError={setError} setComplete={setComplete} />}
+      {!uploading && <Upload setUploading={setUploading} fingerprint={fingerprint} setFingerprint={setFingerprint} setStatus={setStatus} identifier={user.identifier} setError={setError} setComplete={setComplete} />}
       {uploading && <Progress setUploading={setUploading} status={status} complete={complete} setComplete={setComplete} />}
     </section>
   )
