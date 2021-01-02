@@ -25,4 +25,5 @@ yarn-debug.log*
 yarn-error.log*
 *.log
 .vercel
+vercel.json
 /public/.well-known
