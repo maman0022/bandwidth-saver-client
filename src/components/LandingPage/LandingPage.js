@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import './LandingPage.css'
 import transfer from './transfer.png'
 import onedrive from './onedrive.png'
 import increase from './increase.png'
 import dropbox from './dropbox.jpg'
-import { Link } from 'react-router-dom'
 
 function LandingPage() {
   return (
@@ -22,7 +21,7 @@ function LandingPage() {
       </div>
       <div class="lp-section flex-column align-center">
         <p className='lp-paragraph'>Non-registered users can upload 2 files per hour. If you register, it's increased to 5.</p>
-          <img id='lp-increase' src={increase} alt='' />
+        <img id='lp-increase' src={increase} alt='' />
       </div>
     </section>
   )
