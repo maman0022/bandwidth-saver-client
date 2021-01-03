@@ -1,50 +1,56 @@
 header {
-  background-color: #0c2231;
-  color: white;
+  background-color: #eca451;
+  color: #000000;
   padding-bottom: 0.3rem;
   justify-content: center;
+  border-bottom: lightgray solid 1px;
+}
+
+#main-header h1 {
+  display: none;
 }
 
 #main-header, #main-header h1 {
-  color: white;
+  color: #000000;
   text-decoration: none;
   margin: 0.2rem 0.5rem;
   flex-basis: 100%;
   text-align: center;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+#header-nav {
+  padding-bottom: 0.3rem;
 }
 
 .nav-link {
-  background-color: #8fbc8f;
-  padding: 0.1rem 0.3rem;
-  border-radius: 10px;
-  margin: 0.5rem;
+  margin: 0 0.5rem;
   text-decoration: none;
-  width: 8ch;
-  display: inline-block;
   text-align: center;
-  color: #0000E6;
+  color: #000000;
+  font-size: larger;
 }
 
-.nav-link:hover, .nav-link:focus {
-  color: #002a00;
+.nav-link:hover {
+  border-bottom: #000000 solid 2px;
 }
 
-.nav-link:active {
-  color: crimson;
-}
-
-.nav-link:visited {
-  color: crimson;
+#logo {
+  height: 2.5em;
+  margin: 0.5em 0;
 }
 
 @media screen and (min-width:800px) {
+  #main-header h1 {
+    display: inline;
+  }
   #main-header, #main-header h1 {
     flex-basis: unset;
-    margin-left: 5%;
     width: max-content;
   }
   header {
     justify-content: space-between;
+    padding-bottom: 0;
   }
   #header-nav {
     margin-right: 5%;

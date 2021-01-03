@@ -28,7 +28,8 @@ function Header(props) {
 
   return (
     <header className='flex-row align-center full-width flex-wrap'>
-      <Link to='/' id='main-header'>
+      <Link to='/' id='main-header' className='flex-row justify-center align-center'>
+        <img src={process.env.PUBLIC_URL + '/favicon.ico'} alt='site logo' id='logo' />
         <h1>Bandwidth Saver</h1>
       </Link>
       {checkIfLoggedIn()}
