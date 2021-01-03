@@ -1,7 +1,6 @@
 header {
   background-color: #eca451;
   color: #000000;
-  padding-bottom: 0.3rem;
   justify-content: center;
   border-bottom: lightgray solid 1px;
 }
@@ -11,16 +10,18 @@ header {
 }
 
 #main-header, #main-header h1 {
+  flex: 1;
   color: #000000;
   text-decoration: none;
   margin: 0.2rem 0.5rem;
-  flex-basis: 100%;
-  text-align: center;
+  text-align: start;
   font-family: 'Courier New', Courier, monospace;
+  width: max-content;
 }
 
 #header-nav {
   padding-bottom: 0.3rem;
+  margin-right: 5%;
 }
 
 .nav-link {
@@ -43,16 +44,5 @@ header {
 @media screen and (min-width:800px) {
   #main-header h1 {
     display: inline;
-  }
-  #main-header, #main-header h1 {
-    flex-basis: unset;
-    width: max-content;
-  }
-  header {
-    justify-content: space-between;
-    padding-bottom: 0;
-  }
-  #header-nav {
-    margin-right: 5%;
   }
 }
