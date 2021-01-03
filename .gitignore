@@ -19,6 +19,7 @@
 .env.production.local
 .env
 .eslintcache
+Thumbs.db
 
 npm-debug.log*
 yarn-debug.log*
