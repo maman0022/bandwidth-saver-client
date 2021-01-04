@@ -29,8 +29,9 @@ function Upload(props) {
 
   async function handleUpload(e, service) {
     e.preventDefault()
-    if (!service || (service !== 'db' && service !== 'od')) {
-      return props.setError('Invalid service parameter')
+    if (!service || (service !== 'Dropbox' && service !== 'OneDrive')) {
+      props.setError('Invalid service parameter')
+      return window.scrollTo(0, 0)
     }
     setNameError(null)
     setUrlError(null)
@@ -38,10 +39,12 @@ function Upload(props) {
     try {
       await checkIfResetNeeded()
     } catch (error) {
-      return props.setError(error)
+      props.setError(error)
+      return window.scrollTo(0, 0)
     }
     if (fingerprintCopy.current_usage >= fingerprintCopy.max_per_hour) {
-      return props.setError('You have exhausted your quota for the hour. Please wait until the time listed below.')
+      props.setError('You have exhausted your quota for the hour. Please wait until the time listed below.')
+      return window.scrollTo(0, 0)
     }
     const form = e.target.parentNode.parentNode
     const filename = form['file-name'].value
@@ -53,8 +56,8 @@ function Upload(props) {
       return setUrlError(`File URL must be a valid URL that starts with http(s)://`)
     }
     props.setUploading(true)
-    if (service === 'db') {
-      props.setStatus('A pop-up should have opened. Please sign-in to your Dropbox account and afterwards click the save button at the bottom right corner.')
+    props.setStatus(`A pop-up should have opened. Please sign-in to your ${service} account, select the folder you want to save the file into and click the ${service === 'Dropbox' ? 'save' : 'open'} button at the bottom right corner.`)
+    if (service === 'Dropbox') {
       const options = {
         success: function () {
           ApiService.incrementUsage(fingerprintCopy.identifier)
@@ -67,11 +70,14 @@ function Upload(props) {
               props.setStatus('Success! File saved to your Dropbox.')
               props.setComplete(true)
             })
-            .catch(error => props.setError(error.message))
+            .catch(error => {
+              props.setError(error.message)
+              window.scrollTo(0, 0)
+            })
         },
         progress: function (progress) {
           //Just going to show UPLOADING because of dropbox bug in which progress is always returning zero
-          props.setStatus('UPLOADING')
+          props.setStatus('Uploading')
         },
         cancel: function () {
           props.setFingerprint(fingerprintCopy)
@@ -89,7 +95,6 @@ function Upload(props) {
       Dropbox.save(url, filename, options)
     }
     else {
-      props.setStatus('A pop-up should have opened. Please sign-in to your OneDrive account and afterwards select the folder you want to save the file into and click the open button at the bottom right corner.')
       const options = {
         clientId: process.env.REACT_APP_OD_CLIENT_ID,
         action: 'query',
@@ -166,7 +171,7 @@ function Upload(props) {
             if (result.percentageComplete === undefined) {
               return
             }
-            return props.setStatus(`${result.percentageComplete}% UPLOADED`)
+            return props.setStatus(`${result.percentageComplete}% Uploaded`)
           }
           if (result.status === 'completed') {
             clearInterval(interval)
@@ -180,7 +185,10 @@ function Upload(props) {
                 props.setStatus('Success! File saved to your OneDrive.')
                 props.setComplete(true)
               })
-              .catch(error => props.setError(error.message))
+              .catch(error => {
+                props.setError(error.message)
+                window.scrollTo(0, 0)
+              })
           }
         })
     }, 1000)
@@ -214,7 +222,7 @@ function Upload(props) {
           <p className='quota'>{`Your quota will reset at ${getResetTime()}`}</p>
         </>
       }
-      <form>
+      <form id='upload-form'>
         <div>
           <label htmlFor='file-name'>File Name:</label>
           <input className='full-width' type='text' id='file-name' name='file-name' onChange={validateName} required />
@@ -226,8 +234,8 @@ function Upload(props) {
         </div>
         {urlError && <h5 className='error-message'>{urlError}</h5>}
         <div className='flex-row align-center justify-evenly flex-wrap'>
-          <button className='upload-btn' onClick={e => handleUpload(e, 'db')} disabled={nameError || urlError}>{<img className='logo' alt='dropbox logo' src={dropbox} />}Upload to Dropbox</button>
-          <button className='upload-btn' onClick={e => handleUpload(e, 'od')} disabled={nameError || urlError}>{<img className='logo' alt='onedrive logo' src={onedrive} />}Upload to OneDrive</button>
+          <button className='upload-btn' onClick={e => handleUpload(e, 'Dropbox')} disabled={nameError || urlError}>{<img className='logo' alt='dropbox logo' src={dropbox} />}Upload to Dropbox</button>
+          <button className='upload-btn' onClick={e => handleUpload(e, 'OneDrive')} disabled={nameError || urlError}>{<img className='logo' alt='onedrive logo' src={onedrive} />}Upload to OneDrive</button>
         </div>
       </form>
     </>

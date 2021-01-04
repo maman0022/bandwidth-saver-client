@@ -1,6 +1,8 @@
 .error-message {
   color: rgb(214, 0, 0);
   margin: 1rem auto;
+  font-size: medium;
+  text-align: center;
 }
 
 .loading-message {

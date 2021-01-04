@@ -27,3 +27,11 @@
   border-radius: 50%;
   padding-top: 0.1em;
 }
+
+#upload-form {
+  width: 100%;
+}
+
+textarea {
+  max-width: 100%;
+}

@@ -1,15 +1,19 @@
 import React from 'react'
+import './Progress.css'
+import popup from './popup.png'
 
 function Progress(props) {
   function handleGoBack() {
+    props.setError(false)
     props.setUploading(false)
     props.setComplete(false)
   }
 
   return (
     <>
-      <h2 id='upload-status'>{props.status}</h2>
-      {props.complete && <button onClick={handleGoBack}>Go Back</button>}
+      <img id='popup' src={popup} alt='computer popup graphic' />
+      <p id='upload-status'>{props.status}</p>
+      {props.complete && <button id='back-btn' onClick={handleGoBack}>Go Back</button>}
     </>
   )
 }

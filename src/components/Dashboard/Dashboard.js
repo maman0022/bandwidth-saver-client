@@ -35,11 +35,11 @@ function Dashboard() {
   }, [])
 
   return (
-    <section className='flex-column full-height justify-evenly'>
+    <section className='flex-column full-height justify-evenly align-center'>
       {!!error && <h5 className='error-message'>{error}</h5>}
       {loading && !error && <h3 className='loading-message'>Loading</h3>}
       {!uploading && <Upload setUploading={setUploading} fingerprint={fingerprint} setFingerprint={setFingerprint} setStatus={setStatus} identifier={user.identifier} setError={setError} setComplete={setComplete} />}
-      {uploading && <Progress setUploading={setUploading} status={status} complete={complete} setComplete={setComplete} />}
+      {uploading && <Progress setUploading={setUploading} status={status} complete={complete} setComplete={setComplete} setError={setError} />}
     </section>
   )
 }
