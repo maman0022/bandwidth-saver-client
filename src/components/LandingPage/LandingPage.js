@@ -1,9 +1,9 @@
 import React from 'react'
 import './LandingPage.css'
-import transfer from './transfer.png'
-import onedrive from './onedrive.png'
-import increase from './increase.png'
-import dropbox from './dropbox.jpg'
+import transfer from './images/transfer.png'
+import onedrive from './images/onedrive.png'
+import increase from './images/increase.png'
+import dropbox from './images/dropbox.jpg'
 
 function LandingPage() {
   return (

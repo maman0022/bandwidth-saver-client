@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './Upload.css'
-import onedrive from '../LandingPage/onedrive.png'
-import dropbox from '../LandingPage/dropbox.jpg'
+import onedrive from '../LandingPage/images/onedrive.png'
+import dropbox from '../LandingPage/images/dropbox.jpg'
 import ApiService from '../../services/ApiService'
 
 function Upload(props) {
