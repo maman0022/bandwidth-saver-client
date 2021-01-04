@@ -3,10 +3,6 @@
   margin: 1rem auto;
 }
 
-.form-error {
-  color: #FF8A8A;
-}
-
 .loading-message {
   display: block;
   animation-name: blinking;

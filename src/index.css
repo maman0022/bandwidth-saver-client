@@ -8,3 +8,7 @@
 * {
   box-sizing: border-box;
 }
+
+section {
+  padding: 25px;
+}

@@ -76,32 +76,32 @@ function Register(props) {
       <form className='flex-column align-center' onSubmit={handleFormSubmit}>
         {!!error && <h5 className='error-message'>{error}</h5>}
         {loading && !error && <h3 className='loading-message'>Loading</h3>}
-        <div className='register-form-div'>
+        <div>
           <label htmlFor='fname'>First Name:</label>
           <input type='text' id='fname' name='fname' required onChange={validateFName}></input>
           {!!fNameError && <h5 className='validation-error'>{fNameError}</h5>}
         </div>
-        <div className='register-form-div'>
+        <div>
           <label htmlFor='lname'>Last Name:</label>
           <input type='text' id='lname' name='lname' required onChange={validateLName}></input>
           {!!lNameError && <h5 className='validation-error'>{lNameError}</h5>}
         </div>
-        <div className='register-form-div'>
+        <div>
           <label htmlFor='email'>Email:</label>
           <input type='email' id='email' name='email' required onChange={validateEmail}></input>
           {!!emailError && <h5 className='validation-error'>{emailError}</h5>}
         </div>
-        <div className='register-form-div'>
+        <div>
           <label htmlFor='password'>Password:</label>
           <input type='password' id='password' name='password' required onChange={validatePassword}></input>
           {!!passwordError && <h5 className='validation-error'>{passwordError}</h5>}
         </div>
-        <div className='register-form-div'>
+        <div>
           <label htmlFor='confirm-password'>Confirm Password:</label>
           <input type='password' id='confirm-password' name='confirm-password' required onChange={validateConfirm}></input>
           {!!confirmError && <h5 className='validation-error'>{confirmError}</h5>}
         </div>
-        <input type='submit' value='Create Account' id='create-acc-btn' disabled={checkAllAccurate()}></input>
+        <input type='submit' value='Create Account' disabled={checkAllAccurate()}></input>
       </form>
     </section>
   )

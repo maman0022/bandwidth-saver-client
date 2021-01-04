@@ -22,7 +22,8 @@ header {
 
 #header-nav {
   padding-bottom: 0.3rem;
-  margin-right: 5%;
+  margin: auto;
+  padding-right: 5%;
 }
 
 .nav-link {
