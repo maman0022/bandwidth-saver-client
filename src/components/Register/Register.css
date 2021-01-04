@@ -22,18 +22,17 @@ input {
 
 input[type=submit] {
   align-self: flex-end;
-  background-color: lightseagreen;
+  background-color: lightgreen;
   border: none;
   border-radius: 5px;
   padding: 0.3rem 0.8rem;
   margin-top: 0.5rem;
   font-weight: lighter;
-  width: min-content;
   width: max-content;
 }
 
 input[type=submit]:hover, input[type=submit]:focus {
-  background-color: rgb(20, 122, 117);
+  background-color: darkgreen;
   color: #ffffff;
 }
 

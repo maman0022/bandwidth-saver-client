@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import './Dashboard.css'
 import FingerprintJS from '@fingerprintjs/fingerprintjs'
 import UserService from '../../services/UserService'
 import ApiService from '../../services/ApiService'

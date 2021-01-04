@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import './Upload.css'
+import onedrive from '../LandingPage/onedrive.png'
+import dropbox from '../LandingPage/dropbox.jpg'
 import ApiService from '../../services/ApiService'
 
 function Upload(props) {
@@ -8,11 +11,11 @@ function Upload(props) {
   //create a local copy of fingerprint to limit re-renders
   let fingerprintCopy = { ...props.fingerprint }
 
-  //determine if it is past the quota reset time, if so tell server to reset quota || run everytime user uploads
+  //determine if it is past the quota reset time, if so tell server to reset quota, runs everytime user uploads
   function checkIfResetNeeded() {
     if (Date.now() > Number(fingerprintCopy.next_reset)) {
       return new Promise((resolve, reject) => {
-        ApiService.resetFingerprint(props.identifier)
+        ApiService.resetFingerprint(fingerprintCopy.identifier)
           .then(async response => {
             if (!response.ok) {
               return reject((await response.json()).message)
@@ -24,8 +27,11 @@ function Upload(props) {
     }
   }
 
-  async function handleDropbox(e) {
+  async function handleUpload(e, service) {
     e.preventDefault()
+    if (!service || (service !== 'db' && service !== 'od')) {
+      return props.setError('Invalid service parameter')
+    }
     setNameError(null)
     setUrlError(null)
     props.setError(null)
@@ -37,7 +43,7 @@ function Upload(props) {
     if (fingerprintCopy.current_usage >= fingerprintCopy.max_per_hour) {
       return props.setError('You have exhausted your quota for the hour. Please wait until the time listed below.')
     }
-    const form = e.target.parentNode
+    const form = e.target.parentNode.parentNode
     const filename = form['file-name'].value
     const url = form['file-url'].value
     if (!filename) {
@@ -47,78 +53,64 @@ function Upload(props) {
       return setUrlError(`File URL must be a valid URL that starts with http(s)://`)
     }
     props.setUploading(true)
-    props.setStatus('A pop-up should have opened. Please sign-in to your Dropbox account and afterwards click the save button at the bottom right corner.')
-    const options = {
-      success: function () {
-        ++fingerprintCopy.current_usage
-        props.setFingerprint(fingerprintCopy)
-        props.setStatus('Success! File saved to your Dropbox.')
-        props.setComplete(true)
-      },
-      progress: function (progress) {
-        //Just going to show UPLOADING because of dropbox bug in which progress is always returning zero
-        props.setStatus('UPLOADING')
-      },
-      cancel: function () {
-        props.setFingerprint(fingerprintCopy)
-        props.setStatus('The transfer was canceled.')
-        props.setComplete(true)
-      },
+    if (service === 'db') {
+      props.setStatus('A pop-up should have opened. Please sign-in to your Dropbox account and afterwards click the save button at the bottom right corner.')
+      const options = {
+        success: function () {
+          ApiService.incrementUsage(fingerprintCopy.identifier)
+            .then(async response => {
+              if (!response.ok) {
+                throw new Error((await response.json()).message)
+              }
+              ++fingerprintCopy.current_usage
+              props.setFingerprint(fingerprintCopy)
+              props.setStatus('Success! File saved to your Dropbox.')
+              props.setComplete(true)
+            })
+            .catch(error => props.setError(error.message))
+        },
+        progress: function (progress) {
+          //Just going to show UPLOADING because of dropbox bug in which progress is always returning zero
+          props.setStatus('UPLOADING')
+        },
+        cancel: function () {
+          props.setFingerprint(fingerprintCopy)
+          props.setStatus('The transfer was canceled.')
+          props.setComplete(true)
+        },
 
-      error: function (errorMessage) {
-        props.setFingerprint(fingerprintCopy)
-        props.setStatus(errorMessage.toString())
-        props.setComplete(true)
+        error: function (errorMessage) {
+          props.setFingerprint(fingerprintCopy)
+          props.setStatus(errorMessage.toString())
+          props.setComplete(true)
+        }
       }
+      // eslint-disable-next-line no-undef
+      Dropbox.save(url, filename, options)
     }
-    // eslint-disable-next-line no-undef
-    Dropbox.save(url, filename, options)
-  }
-
-  async function handleOnedrive(e) {
-    e.preventDefault()
-    setNameError(null)
-    setUrlError(null)
-    props.setError(null)
-    try {
-      await checkIfResetNeeded()
-    } catch (error) {
-      return props.setError(error)
-    }
-    if (fingerprintCopy.current_usage >= fingerprintCopy.max_per_hour) {
-      return props.setError('You have exhausted your quota for the hour. Please wait until the time listed below.')
-    }
-    const form = e.target.parentNode
-    const filename = form['file-name'].value
-    const url = form['file-url'].value
-    if (!filename) {
-      return setNameError(`File name cannot be blank`)
-    }
-    if (!url) {
-      return setUrlError(`File URL must be a valid URL that starts with http(s)://`)
-    }
-    props.setUploading(true)
-    props.setStatus('A pop-up should have opened. Please sign-in to your OneDrive account and afterwards select the folder you want to save the file into and click the open button at the bottom right corner.')
-    const options = {
-      clientId: process.env.REACT_APP_OD_CLIENT_ID,
-      action: 'query',
-      viewType: 'folders',
-      success: function (folder) {
-        uploadToOnedrive(folder, filename, url)
-      },
-      cancel: function () {
-        props.setFingerprint(fingerprintCopy)
-        props.setStatus("The transfer was canceled.")
-        props.setComplete(true)
-      },
-      error: function (errorMessage) {
-        props.setFingerprint(fingerprintCopy)
-        props.setStatus(errorMessage.toString())
-        props.setComplete(true)
+    else {
+      props.setStatus('A pop-up should have opened. Please sign-in to your OneDrive account and afterwards select the folder you want to save the file into and click the open button at the bottom right corner.')
+      const options = {
+        clientId: process.env.REACT_APP_OD_CLIENT_ID,
+        action: 'query',
+        viewType: 'folders',
+        success: function (folder) {
+          uploadToOnedrive(folder, filename, url)
+        },
+        cancel: function () {
+          props.setFingerprint(fingerprintCopy)
+          props.setStatus("The transfer was canceled.")
+          props.setComplete(true)
+        },
+        error: function (errorMessage) {
+          props.setFingerprint(fingerprintCopy)
+          props.setStatus(errorMessage.toString())
+          props.setComplete(true)
+        }
       }
+      // eslint-disable-next-line no-undef
+      OneDrive.open(options)
     }
-    // eslint-disable-next-line no-undef
-    OneDrive.open(options)
   }
 
   function uploadToOnedrive(folder, name, url) {
@@ -177,11 +169,18 @@ function Upload(props) {
             return props.setStatus(`${result.percentageComplete}% UPLOADED`)
           }
           if (result.status === 'completed') {
-            ++fingerprintCopy.current_usage
-            props.setFingerprint(fingerprintCopy)
-            props.setStatus('Success! File saved to your OneDrive.')
-            props.setComplete(true)
-            return clearInterval(interval)
+            clearInterval(interval)
+            ApiService.incrementUsage(fingerprintCopy.identifier)
+              .then(async response => {
+                if (!response.ok) {
+                  throw new Error((await response.json()).message)
+                }
+                ++fingerprintCopy.current_usage
+                props.setFingerprint(fingerprintCopy)
+                props.setStatus('Success! File saved to your OneDrive.')
+                props.setComplete(true)
+              })
+              .catch(error => props.setError(error.message))
           }
         })
     }, 1000)
@@ -209,16 +208,27 @@ function Upload(props) {
 
   return (
     <>
-      {fingerprintCopy.max_per_hour && <h3>{`You have used ${fingerprintCopy.current_usage} out of ${fingerprintCopy.max_per_hour} transfers. Your quota will reset at ${getResetTime()}`}</h3>}
+      {fingerprintCopy.max_per_hour &&
+        <>
+          <p className='quota'>{`You have used ${fingerprintCopy.current_usage} out of ${fingerprintCopy.max_per_hour} transfers`}</p>
+          <p className='quota'>{`Your quota will reset at ${getResetTime()}`}</p>
+        </>
+      }
       <form>
-        <label htmlFor='file-name'>File Name:</label>
-        <input className='full-width' type='text' id='file-name' name='file-name' onChange={validateName} required />
+        <div>
+          <label htmlFor='file-name'>File Name:</label>
+          <input className='full-width' type='text' id='file-name' name='file-name' onChange={validateName} required />
+        </div>
         {nameError && <h5 className='error-message'>{nameError}</h5>}
-        <label htmlFor='file-url'>File URL:</label>
-        <textarea className='full-width' type='text' id='file-url' name='file-url' onChange={validateUrl} required />
+        <div>
+          <label htmlFor='file-url'>File URL:</label>
+          <textarea className='full-width' type='text' id='file-url' name='file-url' onChange={validateUrl} rows='5' required />
+        </div>
         {urlError && <h5 className='error-message'>{urlError}</h5>}
-        <button onClick={handleDropbox} disabled={nameError || urlError}>Upload to Dropbox</button>
-        <button onClick={handleOnedrive} disabled={nameError || urlError}>Upload to OneDrive</button>
+        <div className='flex-row align-center justify-evenly flex-wrap'>
+          <button className='upload-btn' onClick={e => handleUpload(e, 'db')} disabled={nameError || urlError}>{<img className='logo' alt='dropbox logo' src={dropbox} />}Upload to Dropbox</button>
+          <button className='upload-btn' onClick={e => handleUpload(e, 'od')} disabled={nameError || urlError}>{<img className='logo' alt='onedrive logo' src={onedrive} />}Upload to OneDrive</button>
+        </div>
       </form>
     </>
   )
