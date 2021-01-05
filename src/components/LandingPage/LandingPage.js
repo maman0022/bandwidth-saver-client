@@ -13,7 +13,7 @@ function LandingPage() {
         <img id='lp-transfer' src={transfer} alt='' />
       </div>
       <div className="lp-section flex-column align-center">
-        <p className='lp-paragraph'>Any public link on the web can be directly sent to your OneDrive or Dropbox</p>
+        <p className='lp-paragraph'>Any public link on the web can be sent directly to your OneDrive or Dropbox</p>
         <div id='cloud-container' className='flex-row justify-evenly flex-wrap align-center'>
           <img id='lp-onedrive' src={onedrive} alt='' />
           <img id='lp-dropbox' src={dropbox} alt='' />
