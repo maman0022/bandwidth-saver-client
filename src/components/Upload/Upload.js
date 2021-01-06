@@ -3,6 +3,7 @@ import './Upload.css'
 import onedrive from '../LandingPage/images/onedrive.png'
 import dropbox from '../LandingPage/images/dropbox.jpg'
 import ApiService from '../../services/ApiService'
+import PropTypes from 'prop-types'
 
 function Upload(props) {
   const [nameError, setNameError] = useState(null)
@@ -240,6 +241,34 @@ function Upload(props) {
       </form>
     </>
   )
+}
+
+Upload.defaultProps = {
+  setError() { },
+  setUploading() { },
+  setStatus() { },
+  setComplete() { },
+  setFingerprint() { },
+  fingerprint: {
+    identifier: '',
+    max_per_hour: 2,
+    current_usage: 0,
+    next_reset: Date.now() + 3600000
+  }
+}
+
+Upload.propTypes = {
+  setError: PropTypes.func.isRequired,
+  setUploading: PropTypes.func.isRequired,
+  setStatus: PropTypes.func.isRequired,
+  setComplete: PropTypes.func.isRequired,
+  setFingerprint: PropTypes.func.isRequired,
+  fingerprint: PropTypes.shape({
+    identifier: PropTypes.string.isRequired,
+    max_per_hour: PropTypes.number.isRequired,
+    current_usage: PropTypes.number.isRequired,
+    next_reset: PropTypes.number.isRequired,
+  })
 }
 
 export default Upload
