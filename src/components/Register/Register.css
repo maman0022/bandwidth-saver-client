@@ -9,6 +9,7 @@ form {
   padding: 25px;
   border-radius: 5px;
   max-width: min-content;
+  width: 100%;
 }
 
 form div {
@@ -21,7 +22,6 @@ input {
 }
 
 input[type=submit] {
-  align-self: flex-end;
   background-color: lightgreen;
   border: none;
   border-radius: 5px;
