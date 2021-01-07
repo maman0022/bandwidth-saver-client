@@ -235,8 +235,8 @@ function Upload(props) {
         </div>
         {urlError && <h5 className='error-message'>{urlError}</h5>}
         <div className='flex-row align-center justify-evenly flex-wrap'>
-          <button className='upload-btn' onClick={e => handleUpload(e, 'Dropbox')} disabled={nameError || urlError}>{<img className='logo' alt='dropbox logo' src={dropbox} />}Upload to Dropbox</button>
-          <button className='upload-btn' onClick={e => handleUpload(e, 'OneDrive')} disabled={nameError || urlError}>{<img className='logo' alt='onedrive logo' src={onedrive} />}Upload to OneDrive</button>
+          <button className='upload-btn' onClick={e => handleUpload(e, 'Dropbox')} disabled={nameError || urlError || props.loading}>{<img className='logo' alt='dropbox logo' src={dropbox} />}Upload to Dropbox</button>
+          <button className='upload-btn' onClick={e => handleUpload(e, 'OneDrive')} disabled={nameError || urlError || props.loading}>{<img className='logo' alt='onedrive logo' src={onedrive} />}Upload to OneDrive</button>
         </div>
       </form>
     </>
@@ -249,6 +249,7 @@ Upload.defaultProps = {
   setStatus() { },
   setComplete() { },
   setFingerprint() { },
+  loading: true,
   fingerprint: {
     identifier: '',
     max_per_hour: 2,
@@ -263,6 +264,7 @@ Upload.propTypes = {
   setStatus: PropTypes.func.isRequired,
   setComplete: PropTypes.func.isRequired,
   setFingerprint: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
   fingerprint: PropTypes.shape({
     identifier: PropTypes.string.isRequired,
     max_per_hour: PropTypes.number.isRequired,
