@@ -266,10 +266,10 @@ Upload.propTypes = {
   setFingerprint: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   fingerprint: PropTypes.shape({
-    identifier: PropTypes.string.isRequired,
-    max_per_hour: PropTypes.number.isRequired,
-    current_usage: PropTypes.number.isRequired,
-    next_reset: PropTypes.number.isRequired,
+    identifier: PropTypes.string,
+    max_per_hour: PropTypes.number,
+    current_usage: PropTypes.number,
+    next_reset: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
   })
 }
 
