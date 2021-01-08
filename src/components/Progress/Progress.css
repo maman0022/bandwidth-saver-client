@@ -17,8 +17,7 @@
 }
 
 #back-btn:hover, #back-btn:focus {
-  background-color: darkgreen;
-  color: #ffffff;
+  text-decoration: underline;
 }
 
 #popup {
