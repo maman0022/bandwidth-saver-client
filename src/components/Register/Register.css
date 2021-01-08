@@ -32,8 +32,7 @@ input[type=submit] {
 }
 
 input[type=submit]:hover, input[type=submit]:focus {
-  background-color: darkgreen;
-  color: #ffffff;
+  text-decoration: underline;
 }
 
 .signin-header {
