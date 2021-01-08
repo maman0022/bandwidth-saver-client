@@ -13,16 +13,15 @@ header {
   flex: 1;
   color: #000000;
   text-decoration: none;
-  margin: 0.2rem 0.5rem;
+  margin: 0 0.5rem;
   text-align: start;
   font-family: 'Courier New', Courier, monospace;
   width: max-content;
 }
 
 #header-nav {
-  padding-bottom: 0.3rem;
+  padding: 0.5rem 5% 0.5rem 0;
   margin: auto;
-  padding-right: 5%;
 }
 
 .nav-link {
@@ -39,6 +38,18 @@ header {
 #logo {
   height: 2.5em;
   margin: 0.5em 0;
+}
+
+#try-it {
+  padding: 5px 10px;
+  background-color: #000000;
+  color: #ffffff;
+  border-radius: 5px;
+}
+
+#try-it:hover {
+  border-bottom: unset;
+  color: gold;
 }
 
 @media screen and (min-width:800px) {

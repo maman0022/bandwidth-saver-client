@@ -28,3 +28,18 @@
 .lp-section {
   padding: 25px;
 }
+
+#try-free {
+  padding: 0.5em 1em;
+  margin-top: 1em;
+  font-size: larger;
+  border: none;
+  border-radius: 5px;
+  background-color: gold;
+  color: #000000;
+  text-decoration: none;
+}
+
+#try-free:hover, #try-free:focus {
+  text-decoration-line: underline;
+}

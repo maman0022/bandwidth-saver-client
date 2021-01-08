@@ -4,6 +4,7 @@ import transfer from './images/transfer.png'
 import onedrive from './images/onedrive.png'
 import increase from './images/increase.png'
 import dropbox from './images/dropbox.jpg'
+import { Link } from 'react-router-dom'
 
 function LandingPage() {
   return (
@@ -22,6 +23,7 @@ function LandingPage() {
       <div className="lp-section flex-column align-center">
         <p className='lp-paragraph'>Non-registered users can upload 2 files per hour. If you register, it's increased to 5.</p>
         <img id='lp-increase' src={increase} alt='increasing line chart' />
+        <Link id='try-free' to='/dashboard'>Try It Now For FREE!</Link>
       </div>
     </section>
   )

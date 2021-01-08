@@ -15,7 +15,7 @@ function Header(props) {
     }
     return (
       <nav id='header-nav'>
-        <Link to='/dashboard' className='nav-link'>Try It!</Link>
+        <Link to='/dashboard' id='try-it' className='nav-link'>Try It!</Link>
         <Link to='/login' className='nav-link'>Login</Link>
         <Link to='/register' className='nav-link'>Register</Link>
       </nav>
