@@ -3,7 +3,7 @@ import './Register.css'
 import ApiService from '../../services/ApiService'
 import PropTypes from 'prop-types'
 import Recaptcha from 'react-google-recaptcha'
-import { RECAPTCHA_KEY } from '../../config'
+import config from '../config'
 
 function Register(props) {
   const [error, setError] = useState(null)
@@ -127,7 +127,7 @@ function Register(props) {
           <input type='password' id='confirm-password' name='confirm-password' required onChange={validateConfirm}></input>
           {!!confirmError && <h5 className='validation-error'>{confirmError}</h5>}
         </div>
-        <Recaptcha onChange={handleCaptchaSuccess} onExpired={handleCaptchaReset} onErrored={handleCaptchaError} sitekey={RECAPTCHA_KEY} size='compact' />
+        <Recaptcha onChange={handleCaptchaSuccess} onExpired={handleCaptchaReset} onErrored={handleCaptchaError} sitekey={config.RECAPTCHA_KEY} size='compact' />
         <input type='submit' value='Create Account' disabled={checkAllAccurate()}></input>
       </form>
     </section>
