@@ -4,6 +4,7 @@ import TokenService from '../../services/TokenService'
 import ApiService from '../../services/ApiService'
 import PropTypes from 'prop-types'
 import Recaptcha from 'react-google-recaptcha'
+import { RECAPTCHA_KEY } from '../../config'
 
 function Login(props) {
   const [error, setError] = useState(null)
@@ -65,7 +66,7 @@ function Login(props) {
           <label htmlFor='password'>Password:</label>
           <input type='password' id='password' name='password' required></input>
         </div>
-        <Recaptcha onChange={handleCaptchaSuccess} onExpired={handleCaptchaReset} onErrored={handleCaptchaError} sitekey={process.env.REACT_APP_CAPTCHA_KEY} size='compact' />
+        <Recaptcha onChange={handleCaptchaSuccess} onExpired={handleCaptchaReset} onErrored={handleCaptchaError} sitekey={RECAPTCHA_KEY} size='compact' />
         <input type='submit' value='Login'></input>
       </form>
     </section>
