@@ -3,7 +3,7 @@ import './Register.css'
 import ApiService from '../../services/ApiService'
 import PropTypes from 'prop-types'
 import Recaptcha from 'react-google-recaptcha'
-import config from '../config'
+import config from '../../config'
 
 function Register(props) {
   const [error, setError] = useState(null)

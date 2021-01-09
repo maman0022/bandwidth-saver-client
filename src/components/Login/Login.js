@@ -4,7 +4,7 @@ import TokenService from '../../services/TokenService'
 import ApiService from '../../services/ApiService'
 import PropTypes from 'prop-types'
 import Recaptcha from 'react-google-recaptcha'
-import config from '../config'
+import config from '../../config'
 
 function Login(props) {
   const [error, setError] = useState(null)
