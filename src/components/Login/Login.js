@@ -3,18 +3,25 @@ import './Login.css'
 import TokenService from '../../services/TokenService'
 import ApiService from '../../services/ApiService'
 import PropTypes from 'prop-types'
+import Recaptcha from 'react-google-recaptcha'
 
 function Login(props) {
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [captchaToken, setCaptchaToken] = useState(null)
 
   function handleFormSubmit(e) {
     e.preventDefault()
     setLoading(true)
     setError(null)
+    if (!captchaToken) {
+      return setError('CAPTCHA must be completed')
+    }
     const { email, password } = e.target
     const userData = {
-      email: email.value, password: password.value
+      email: email.value,
+      password: password.value,
+      captchaToken
     }
     ApiService.login(userData)
       .then(async response => {
@@ -26,6 +33,18 @@ function Login(props) {
       })
       .catch(error => setError(error.message))
       .finally(() => setLoading(false))
+  }
+
+  function handleCaptchaSuccess(token) {
+    setCaptchaToken(token)
+  }
+
+  function handleCaptchaReset() {
+    setCaptchaToken(null)
+  }
+
+  function handleCaptchaError(error) {
+    setError(error)
   }
 
   return (
@@ -42,6 +61,7 @@ function Login(props) {
           <label htmlFor='password'>Password:</label>
           <input type='password' id='password' name='password' required></input>
         </div>
+        <Recaptcha onChange={handleCaptchaSuccess} onExpired={handleCaptchaReset} onErrored={handleCaptchaError} sitekey={process.env.REACT_APP_CAPTCHA_KEY} size='compact' />
         <input type='submit' value='Login'></input>
       </form>
     </section>

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import './Register.css'
 import ApiService from '../../services/ApiService'
 import PropTypes from 'prop-types'
+import Recaptcha from 'react-google-recaptcha'
 
 function Register(props) {
   const [error, setError] = useState(null)
@@ -11,14 +12,23 @@ function Register(props) {
   const [passwordError, setPasswordError] = useState()
   const [confirmError, setConfirmError] = useState()
   const [loading, setLoading] = useState(false)
+  const [captchaToken, setCaptchaToken] = useState(null)
 
   function handleFormSubmit(e) {
     e.preventDefault()
     setError(null)
     setLoading(true)
+    if (!captchaToken) {
+      setError('CAPTCHA must be completed')
+      return window.scrollTo(0, 0)
+    }
     const { fname, lname, email, password } = e.target
     const userData = {
-      fname: fname.value, lname: lname.value, email: email.value, password: password.value
+      fname: fname.value,
+      lname: lname.value,
+      email: email.value,
+      password: password.value,
+      captchaToken
     }
     ApiService.register(userData)
       .then(async response => {
@@ -29,6 +39,18 @@ function Register(props) {
       })
       .catch(error => setError(error.message))
       .finally(() => setLoading(false))
+  }
+
+  function handleCaptchaSuccess(token) {
+    setCaptchaToken(token)
+  }
+
+  function handleCaptchaReset() {
+    setCaptchaToken(null)
+  }
+
+  function handleCaptchaError(error) {
+    setError(error)
   }
 
   function validateFName(e) {
@@ -101,6 +123,7 @@ function Register(props) {
           <input type='password' id='confirm-password' name='confirm-password' required onChange={validateConfirm}></input>
           {!!confirmError && <h5 className='validation-error'>{confirmError}</h5>}
         </div>
+        <Recaptcha onChange={handleCaptchaSuccess} onExpired={handleCaptchaReset} onErrored={handleCaptchaError} sitekey={process.env.REACT_APP_CAPTCHA_KEY} size='compact' />
         <input type='submit' value='Create Account' disabled={checkAllAccurate()}></input>
       </form>
     </section>
