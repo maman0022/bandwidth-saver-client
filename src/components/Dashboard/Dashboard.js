@@ -29,7 +29,10 @@ function Dashboard() {
           }
           setFingerprint(await response.json())
         })
-        .catch(error => setError(error.message))
+        .catch(error => {
+          setError(error.message)
+          return window.scrollTo(0, 0)
+        })
         .finally(() => setLoading(false))
     })()
   }, [])

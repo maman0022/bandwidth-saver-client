@@ -15,7 +15,8 @@ function Login(props) {
     setLoading(true)
     setError(null)
     if (!captchaToken) {
-      return setError('CAPTCHA must be completed')
+      setError('CAPTCHA must be completed')
+      return window.scrollTo(0, 0)
     }
     const { email, password } = e.target
     const userData = {
@@ -31,7 +32,10 @@ function Login(props) {
         TokenService.saveToken((await response.json()).token)
         props.history.push('/dashboard')
       })
-      .catch(error => setError(error.message))
+      .catch(error => {
+        setError(error.message)
+        return window.scrollTo(0, 0)
+      })
       .finally(() => setLoading(false))
   }
 
