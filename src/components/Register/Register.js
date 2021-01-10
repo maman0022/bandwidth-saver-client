@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import './Register.css'
 import ApiService from '../../services/ApiService'
+import TokenService from '../../services/TokenService'
 import PropTypes from 'prop-types'
 import Recaptcha from 'react-google-recaptcha'
 import config from '../../config'
@@ -36,7 +37,23 @@ function Register(props) {
         if (!response.ok) {
           throw new Error((await response.json()).message)
         }
-        props.history.push('/login')
+        const loginData = {
+          email: email.value,
+          password: password.value,
+          captchaToken: 'comingfromregister'
+        }
+        ApiService.login(loginData)
+          .then(async response => {
+            if (!response.ok) {
+              throw new Error((await response.json()).message)
+            }
+            TokenService.saveToken((await response.json()).token)
+            props.history.push('/dashboard')
+          })
+          .catch(error => {
+            setError(error.message)
+            return window.scrollTo(0, 0)
+          })
       })
       .catch(error => {
         setError(error.message)
