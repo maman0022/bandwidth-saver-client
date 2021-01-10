@@ -37,23 +37,8 @@ function Register(props) {
         if (!response.ok) {
           throw new Error((await response.json()).message)
         }
-        const loginData = {
-          email: email.value,
-          password: password.value,
-          captchaToken: 'comingfromregister'
-        }
-        ApiService.login(loginData)
-          .then(async response => {
-            if (!response.ok) {
-              throw new Error((await response.json()).message)
-            }
-            TokenService.saveToken((await response.json()).token)
-            props.history.push('/dashboard')
-          })
-          .catch(error => {
-            setError(error.message)
-            return window.scrollTo(0, 0)
-          })
+        TokenService.saveToken((await response.json()).token)
+        props.history.push('/dashboard')
       })
       .catch(error => {
         setError(error.message)
