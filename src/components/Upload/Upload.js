@@ -147,11 +147,13 @@ function Upload(props) {
 
   function monitorOnedriveUpload(url) {
     let interval
+    //check the monitor url provided by onedrive every second to check upload progress
     interval = setInterval(() => {
       fetch(url)
         .then(async response => {
           if (!response.ok) {
             let errorMessage = 'Error Occurred - Unable to monitor progress of upload. Please go back to the dashboard and try again.'
+            //if error message included in onedrive response, display that instead of generic message
             if (response.headers.get('content-type').includes('application/json')) {
               const result = await response.json()
               if (result.statusDescription) {
